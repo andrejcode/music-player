@@ -1,0 +1,9 @@
+.album-cover-placeholder {
+  background-color: #fff;
+  border-radius: 8px;
+  height: 64px;
+  width: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

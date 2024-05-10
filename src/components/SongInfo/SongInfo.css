@@ -1,0 +1,14 @@
+.song-info {
+  display: flex;
+  align-items: flex-end;
+}
+
+.song-title-and-artist {
+  margin-left: 10px;
+}
+
+.song-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
