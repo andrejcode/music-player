@@ -4,17 +4,72 @@
   left: 0;
   right: 0;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   background-color: #333;
   color: #fff;
   padding: 0 16px;
 }
 
-.music-player .controls {
-  padding-top: 20px;
-  padding-bottom: 20px;
+.song-info-with-favorite-button {
   display: flex;
   align-items: center;
+}
+
+.song-info-with-favorite-button > :first-child {
+  margin-right: 10px;
+}
+
+.audio-controls {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.audio-controls-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.audio-controls-duration {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.duration-left {
+  margin-right: 8px;
+}
+
+.duration-right {
+  margin-left: 8px;
+}
+
+.play-pause-button {
+  all: unset;
+  margin: 0 12px;
+}
+
+.audio-controls-duration input[type='range'] {
+  width: 300px;
+}
+
+.audio-controls-volume {
+  display: flex;
+}
+
+.audio-controls-volume input[type='range'] {
+  width: 70px;
+  transform: rotate(270deg);
+}
+
+.audio-controls-volume-icons {
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+  justify-content: space-between;
+  width: 40px;
 }

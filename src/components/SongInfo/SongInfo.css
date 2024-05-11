@@ -1,10 +1,14 @@
 .song-info {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  max-width: 200px;
 }
 
 .song-title-and-artist {
+  color: #fff;
   margin-left: 10px;
+  margin-right: 10px;
+  white-space: nowrap;
 }
 
 .song-title {

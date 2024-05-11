@@ -8,7 +8,7 @@ interface FavoriteButtonProps {
 function FavoriteButton({ isFavorite }: FavoriteButtonProps) {
   return (
     <button className="favorite-button clickable">
-      {isFavorite ? <FaHeart size={48} /> : <FaRegHeart size={48} />}
+      {isFavorite ? <FaHeart size={32} /> : <FaRegHeart size={32} />}
     </button>
   )
 }
