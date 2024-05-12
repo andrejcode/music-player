@@ -1,0 +1,15 @@
+.song-list {
+  margin: 16px;
+  overflow: auto;
+  margin-bottom: 148px;
+}
+
+.song-spacer {
+  margin-bottom: 10px;
+}
+
+.current-song {
+  background-color: #007fff;
+  border-radius: 8px;
+  width: 300px;
+}

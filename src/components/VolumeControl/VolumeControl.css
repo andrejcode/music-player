@@ -1,0 +1,16 @@
+.audio-controls-volume {
+  display: flex;
+}
+
+.audio-controls-volume input[type='range'] {
+  width: 70px;
+  transform: rotate(270deg);
+}
+
+.audio-controls-volume-icons {
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+  justify-content: space-between;
+  width: 40px;
+}

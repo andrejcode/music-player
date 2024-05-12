@@ -1,0 +1,36 @@
+.audio-controls {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.audio-controls-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.audio-controls-duration {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.duration-left {
+  margin-right: 8px;
+}
+
+.duration-right {
+  margin-left: 8px;
+}
+
+.play-pause-button {
+  all: unset;
+  margin: 0 12px;
+}
+
+.audio-controls-duration input[type='range'] {
+  width: 300px;
+}

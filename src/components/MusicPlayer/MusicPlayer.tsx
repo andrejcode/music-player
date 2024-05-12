@@ -1,36 +1,27 @@
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
-import {
-  IoPlaySkipBack,
-  IoPlaySkipForward,
-  IoPlay,
-  IoPause,
-  IoVolumeLow,
-  IoVolumeHigh,
-} from 'react-icons/io5'
-import RoundButton from '../RoundButton/RoundButton'
+import AudioControls from '../AudioControls/AudioControls'
 import SongInfo from '../SongInfo/SongInfo'
 import FavoriteButton from '../FavoriteButton/FavoriteButton'
-import songs from '@/songs'
+import songs, { type Song } from '@/songs'
+import useSongStore from '@/store'
+import VolumeControl from '../VolumeControl/VolumeControl'
 import './MusicPlayer.css'
-import formatDuration from '@/utils'
-
-const PATH_TO_SONG = 'src/assets/songs/'
 
 function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentSong, setCurrentSong] = useState(songs[0])
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(1)
+
+  const isPlaying = useSongStore(state => state.isPlaying)
+  const setIsPlaying = useSongStore(state => state.setIsPlaying)
+  const currentSong = useSongStore(state => state.currentSong)
+  const changeSong = useSongStore(state => state.changeSong)
+  const favoriteSongs = useSongStore(state => state.favoriteSongs)
+  const addSongToFavorites = useSongStore(state => state.addSongToFavorites)
+  const removeSongFromFavorites = useSongStore(state => state.removeSongFromFavorites)
+  const volume = useSongStore(state => state.volume)
+  const changeVolume = useSongStore(state => state.changeVolume)
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.load()
-      setIsPlaying(false)
-    }
-  }, [currentSong])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -58,18 +49,30 @@ function MusicPlayer() {
       audio.removeEventListener('ended', handleEnded)
       audio.removeEventListener('timeupdate', handleTimeUpdate)
     }
-  }, [audioRef])
+  }, [audioRef, setIsPlaying])
+
+  function toggleIsPlaying() {
+    if (isPlaying) {
+      audioRef.current?.pause()
+      setIsPlaying(false)
+    } else {
+      audioRef.current?.play()
+      setIsPlaying(true)
+    }
+  }
 
   function playNextSong() {
     const currentIndex = songs.findIndex(song => song.id === currentSong.id)
     const nextIndex = (currentIndex + 1) % songs.length
-    setCurrentSong(songs[nextIndex])
+    changeSong(songs[nextIndex])
+    setIsPlaying(false)
   }
 
   function playPreviousSong() {
     const currentIndex = songs.findIndex(song => song.id === currentSong.id)
     const previousIndex = (currentIndex - 1 + songs.length) % songs.length
-    setCurrentSong(songs[previousIndex])
+    changeSong(songs[previousIndex])
+    setIsPlaying(false)
   }
 
   function handleSeek(event: ChangeEvent<HTMLInputElement>) {
@@ -84,76 +87,53 @@ function MusicPlayer() {
     if (audioRef.current) {
       const newVolume = parseInt(event.target.value) / 100
       audioRef.current.volume = newVolume
-      setVolume(newVolume)
+      changeVolume(newVolume)
+    }
+  }
+
+  function isSongFavorite(song: Song) {
+    const foundSong = favoriteSongs.find(favoriteSong => favoriteSong.id === song.id)
+
+    if (foundSong) {
+      return true
+    }
+
+    return false
+  }
+
+  function handleAddOrRemoveSongFromFavorites(song: Song) {
+    const foundSong = favoriteSongs.find(favoriteSong => favoriteSong.id === song.id)
+
+    if (foundSong) {
+      removeSongFromFavorites(song)
+    } else {
+      addSongToFavorites(song)
     }
   }
 
   return (
     <div className="music-player">
       <div className="song-info-with-favorite-button">
-        <FavoriteButton isFavorite={false} />
+        <FavoriteButton
+          isFavorite={isSongFavorite(currentSong)}
+          onClick={() => handleAddOrRemoveSongFromFavorites(currentSong)}
+        />
         <SongInfo title={currentSong.title} artist={currentSong.artist} />
       </div>
 
-      <div className="audio-controls">
-        <audio ref={audioRef} src={PATH_TO_SONG + currentSong.fileName} preload="metadata">
-          Your browser does not support the audio element.
-        </audio>
+      <AudioControls
+        ref={audioRef}
+        currentSong={currentSong}
+        playPreviousSong={playPreviousSong}
+        toggleIsPlaying={toggleIsPlaying}
+        playNextSong={playNextSong}
+        isPlaying={isPlaying}
+        currentTime={currentTime}
+        duration={duration}
+        handleSeek={handleSeek}
+      />
 
-        <div className="audio-controls-buttons">
-          <RoundButton onClick={playPreviousSong}>
-            <IoPlaySkipBack size={16} />
-          </RoundButton>
-
-          <button
-            className="play-pause-button clickable"
-            onClick={() => {
-              if (isPlaying) {
-                audioRef.current?.pause()
-                setIsPlaying(false)
-              } else {
-                audioRef.current?.play()
-                setIsPlaying(true)
-              }
-            }}
-          >
-            {isPlaying ? <IoPause color="#fff" size={20} /> : <IoPlay color="#fff" size={20} />}
-          </button>
-
-          <RoundButton onClick={playNextSong}>
-            <IoPlaySkipForward size={16} />
-          </RoundButton>
-        </div>
-
-        <div className="audio-controls-duration">
-          <span className="duration-left">{formatDuration(currentTime)}</span>
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            value={currentTime}
-            onChange={handleSeek}
-            className="clickable"
-          />
-          <span className="duration-right">{formatDuration(duration)}</span>
-        </div>
-      </div>
-
-      <div className="audio-controls-volume">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={volume * 100}
-          onChange={handleVolumeChange}
-          className="clickable"
-        />
-        <div className="audio-controls-volume-icons">
-          <IoVolumeHigh />
-          <div>{Math.round(volume * 100)}%</div>
-          <IoVolumeLow />
-        </div>
-      </div>
+      <VolumeControl volume={volume} handleVolumeChange={handleVolumeChange} />
     </div>
   )
 }

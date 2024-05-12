@@ -1,14 +1,15 @@
-import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import { IoHeart, IoHeartOutline } from 'react-icons/io5'
 import './FavoriteButton.css'
 
 interface FavoriteButtonProps {
   isFavorite: boolean
+  onClick: () => void
 }
 
-function FavoriteButton({ isFavorite }: FavoriteButtonProps) {
+function FavoriteButton({ isFavorite, onClick }: FavoriteButtonProps) {
   return (
-    <button className="favorite-button clickable">
-      {isFavorite ? <FaHeart size={32} /> : <FaRegHeart size={32} />}
+    <button className="favorite-button clickable" onClick={onClick}>
+      {isFavorite ? <IoHeart size={32} /> : <IoHeartOutline size={32} />}
     </button>
   )
 }

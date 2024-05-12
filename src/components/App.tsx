@@ -1,44 +1,31 @@
 import { useState } from 'react'
 import MusicPlayer from './MusicPlayer/MusicPlayer'
-import songs from '@/songs'
-import { FaList, FaHeart } from 'react-icons/fa'
-import SongInfo from './SongInfo/SongInfo'
+import Tabs from './Tabs/Tabs'
+import SongList from './SongList/SongList'
+import useSongStore from '@/store'
+import songs, { type Song } from '@/songs'
 
 function App() {
   const [activeTab, setActiveTab] = useState('List')
 
-  const tabs = [
-    { id: 'list-tab', label: 'List', icon: <FaList color="#fff" /> },
-    { id: 'favorites-tab', label: 'Favorites', icon: <FaHeart color="#fff" /> },
-  ]
+  const currentSong = useSongStore(state => state.currentSong)
+  const favoriteSongs = useSongStore(state => state.favoriteSongs)
 
-  function handleTabClick(tab: string) {
-    setActiveTab(tab)
+  function songsToShow(): Song[] {
+    switch (activeTab) {
+      case 'List':
+        return songs
+      case 'Favorites':
+        return favoriteSongs
+      default:
+        return []
+    }
   }
 
   return (
     <>
-      <div className="tabs">
-        {tabs.map(tab => (
-          <div
-            key={tab.id}
-            className={`tab clickable ${activeTab === tab.label ? 'active-tab' : ''}`}
-            onClick={() => handleTabClick(tab.label)}
-          >
-            {tab.icon}
-            <span className="tab-label">{tab.label}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="song-list">
-        {songs.map(song => (
-          <div className="song-spacer" key={song.id}>
-            <SongInfo title={song.title} artist={song.artist} />
-          </div>
-        ))}
-      </div>
-
+      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      <SongList currentSong={currentSong} songs={songsToShow()} />
       <MusicPlayer />
     </>
   )
