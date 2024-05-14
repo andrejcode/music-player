@@ -19,14 +19,22 @@ function SongList({ currentSong, songs }: SongListProps) {
 
   return (
     <div className="song-list">
-      {songs.map(song => (
-        <div
-          className={`song-spacer ${currentSong.id === song.id ? 'current-song' : ''}`}
-          key={song.id}
-        >
-          <SongInfo title={song.title} artist={song.artist} onClick={() => handleSongClick(song)} />
-        </div>
-      ))}
+      {songs.length > 0 ? (
+        songs.map(song => (
+          <div
+            key={song.id}
+            className={`song-spacer ${currentSong.id === song.id ? 'current-song' : ''}`}
+          >
+            <SongInfo
+              title={song.title}
+              artist={song.artist}
+              onClick={() => handleSongClick(song)}
+            />
+          </div>
+        ))
+      ) : (
+        <p className="no-songs">There are no songs.</p>
+      )}
     </div>
   )
 }
