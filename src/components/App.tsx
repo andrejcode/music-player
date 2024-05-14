@@ -12,14 +12,11 @@ function App() {
   const favoriteSongs = useSongStore(state => state.favoriteSongs)
 
   function songsToShow(): Song[] {
-    switch (activeTab) {
-      case 'List':
-        return songs
-      case 'Favorites':
-        return favoriteSongs
-      default:
-        return []
+    if (activeTab === 'Favorites') {
+      return favoriteSongs
     }
+
+    return songs
   }
 
   return (
