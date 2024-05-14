@@ -34,3 +34,5 @@ To add new song:
 
 1. Place the song file in the `src/assets/songs` folder.
 2. Add the song object to the list in `src/songs`.
+
+   Note: If you don't include correct audio file that you declared in songs list you will get an error.
