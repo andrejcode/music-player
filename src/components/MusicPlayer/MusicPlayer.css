@@ -10,12 +10,3 @@
   color: #fff;
   padding: 0 16px;
 }
-
-.song-info-with-favorite-button {
-  display: flex;
-  align-items: center;
-}
-
-.song-info-with-favorite-button > :first-child {
-  margin-right: 10px;
-}

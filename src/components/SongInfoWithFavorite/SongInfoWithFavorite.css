@@ -1,0 +1,9 @@
+.song-info-with-favorite-button {
+  display: flex;
+  align-items: center;
+  flex: 0 0 200px;
+}
+
+.song-info-with-favorite-button > :first-child {
+  margin-right: 10px;
+}

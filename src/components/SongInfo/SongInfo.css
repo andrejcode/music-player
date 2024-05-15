@@ -1,18 +1,27 @@
 .song-info {
   display: flex;
   align-items: center;
-  max-width: 200px;
+  width: 280px;
 }
 
 .song-title-and-artist {
   color: #fff;
   margin-left: 10px;
   margin-right: 10px;
-  white-space: nowrap;
+  overflow: hidden;
 }
 
 .song-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 4px;
+}
+
+.song-artist {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

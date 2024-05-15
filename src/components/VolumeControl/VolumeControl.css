@@ -1,5 +1,6 @@
 .audio-controls-volume {
   display: flex;
+  flex: 0 0 200px;
 }
 
 .audio-controls-volume input[type='range'] {

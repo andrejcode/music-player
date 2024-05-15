@@ -1,6 +1,7 @@
 # Music Player
 
-A simple music player created with React and Typescript.
+A simple music player created with React and Typescript. User can use left and right arrows
+to change songs and up and down arrows to adjust the volume. Spacebar can be used to play/pause the song.
 
 ## Getting Started
 

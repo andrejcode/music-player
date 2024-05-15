@@ -1,0 +1,17 @@
+.duration-control {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.duration-control-left {
+  margin-right: 8px;
+}
+
+.duration-control-right {
+  margin-left: 8px;
+}
+
+.duration-control input[type='range'] {
+  width: 300px;
+}
