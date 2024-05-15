@@ -2,8 +2,6 @@ import useSongStore from '@/store'
 import { AudioRefProp } from '@/types'
 import './AudioContainer.css'
 
-const PATH_TO_SONG = 'src/assets/songs/'
-
 function AudioContainer({ audioRef }: AudioRefProp) {
   const currentSong = useSongStore(state => state.currentSong)
   const setIsPlaying = useSongStore(state => state.setIsPlaying)
@@ -27,7 +25,7 @@ function AudioContainer({ audioRef }: AudioRefProp) {
     <div className="audio-container">
       <audio
         ref={audioRef}
-        src={PATH_TO_SONG + currentSong.fileName}
+        src={`songs/${currentSong.fileName}`}
         onLoadedData={handleLoadedData}
         onEnded={handleEnded}
         onTimeUpdate={handleTimeUpdate}

@@ -19,7 +19,7 @@ to change songs and up and down arrows to adjust the volume. Spacebar can be use
 
 3. **Prepare songs:**
 
-- Unzip the songs located in `src/assets/songs`.
+- Unzip the songs located in `public/songs`.
 
   Note: These songs are royalty-free and were downloaded from Pixabay.
 
@@ -33,7 +33,7 @@ to change songs and up and down arrows to adjust the volume. Spacebar can be use
 
 To add new song:
 
-1. Place the song file in the `src/assets/songs` folder.
+1. Place the song file in the `public/songs` folder.
 2. Add the song object to the list in `src/songs`.
 
    Note: If you don't include correct audio file that you declared in songs list you will get an error.
