@@ -20,7 +20,7 @@ function AudioControlsButtons({ audioRef }: AudioRefProp) {
       if (playNextSong) {
         nextIndex = (currentIndex + 1) % songs.length
       } else {
-        nextIndex = (currentIndex + 1) % songs.length
+        nextIndex = (currentIndex - 1 + songs.length) % songs.length
       }
 
       changeSong(songs[nextIndex])
