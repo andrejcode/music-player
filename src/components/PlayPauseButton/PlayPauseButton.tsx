@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { IoPause, IoPlay } from 'react-icons/io5'
 import useSongStore from '@/store'
 import './PlayPauseButton.css'
@@ -8,7 +8,7 @@ function PlayPauseButton({ audioRef }: AudioRefProp) {
   const isPlaying = useSongStore(state => state.isPlaying)
   const setIsPlaying = useSongStore(state => state.setIsPlaying)
 
-  function toggleIsPlaying() {
+  const toggleIsPlaying = useCallback(() => {
     if (!audioRef.current) return
 
     if (isPlaying) {
@@ -18,7 +18,7 @@ function PlayPauseButton({ audioRef }: AudioRefProp) {
       audioRef.current.play()
       setIsPlaying(true)
     }
-  }
+  }, [audioRef, isPlaying, setIsPlaying])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -32,7 +32,7 @@ function PlayPauseButton({ audioRef }: AudioRefProp) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  })
+  }, [toggleIsPlaying])
 
   return (
     <button className="play-pause-button clickable" onClick={toggleIsPlaying}>
