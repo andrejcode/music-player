@@ -10,20 +10,16 @@ function SongInfoWithFavorite() {
   const addSongToFavorites = useSongStore(state => state.addSongToFavorites)
   const removeSongFromFavorites = useSongStore(state => state.removeSongFromFavorites)
 
+  function findFavoriteSong(songId: number) {
+    return favoriteSongs.find(favoriteSong => favoriteSong.id === songId)
+  }
+
   function isSongFavorite(song: Song) {
-    const foundSong = favoriteSongs.find(favoriteSong => favoriteSong.id === song.id)
-
-    if (foundSong) {
-      return true
-    }
-
-    return false
+    return !!findFavoriteSong(song.id)
   }
 
   function handleAddOrRemoveSongFromFavorites(song: Song) {
-    const foundSong = favoriteSongs.find(favoriteSong => favoriteSong.id === song.id)
-
-    if (foundSong) {
+    if (findFavoriteSong(song.id)) {
       removeSongFromFavorites(song)
     } else {
       addSongToFavorites(song)

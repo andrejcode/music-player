@@ -1,10 +1,10 @@
 import { IoPlaySkipBack, IoPlaySkipForward } from 'react-icons/io5'
 import RoundButton from '../RoundButton/RoundButton'
+import PlayPauseButton from '../PlayPauseButton/PlayPauseButton'
 import { AudioRefProp } from '@/types'
 import useSongStore from '@/store'
 import songs from '@/songs'
 import './AudioControlsButtons.css'
-import PlayPauseButton from '../PlayPauseButton/PlayPauseButton'
 import { useCallback, useEffect } from 'react'
 
 function AudioControlsButtons({ audioRef }: AudioRefProp) {
@@ -12,26 +12,29 @@ function AudioControlsButtons({ audioRef }: AudioRefProp) {
   const currentSong = useSongStore(state => state.currentSong)
   const changeSong = useSongStore(state => state.changeSong)
 
-  const playNextSong = useCallback(() => {
-    const currentIndex = songs.findIndex(song => song.id === currentSong.id)
-    const nextIndex = (currentIndex + 1) % songs.length
-    changeSong(songs[nextIndex])
-    setIsPlaying(false)
-  }, [changeSong, currentSong, setIsPlaying])
+  const playNextOrPreviousSong = useCallback(
+    (playNextSong: boolean) => {
+      const currentIndex = songs.findIndex(song => song.id === currentSong.id)
 
-  const playPreviousSong = useCallback(() => {
-    const currentIndex = songs.findIndex(song => song.id === currentSong.id)
-    const previousIndex = (currentIndex - 1 + songs.length) % songs.length
-    changeSong(songs[previousIndex])
-    setIsPlaying(false)
-  }, [changeSong, currentSong, setIsPlaying])
+      let nextIndex: number
+      if (playNextSong) {
+        nextIndex = (currentIndex + 1) % songs.length
+      } else {
+        nextIndex = (currentIndex + 1) % songs.length
+      }
+
+      changeSong(songs[nextIndex])
+      setIsPlaying(false)
+    },
+    [changeSong, currentSong.id, setIsPlaying],
+  )
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'ArrowLeft') {
-        playPreviousSong()
+        playNextOrPreviousSong(false)
       } else if (event.key === 'ArrowRight') {
-        playNextSong()
+        playNextOrPreviousSong(true)
       }
     }
 
@@ -40,17 +43,17 @@ function AudioControlsButtons({ audioRef }: AudioRefProp) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [playNextSong, playPreviousSong])
+  }, [playNextOrPreviousSong])
 
   return (
     <div className="audio-controls-buttons">
-      <RoundButton onClick={playPreviousSong}>
+      <RoundButton onClick={() => playNextOrPreviousSong(false)}>
         <IoPlaySkipBack size={16} />
       </RoundButton>
 
       <PlayPauseButton audioRef={audioRef} />
 
-      <RoundButton onClick={playNextSong}>
+      <RoundButton onClick={() => playNextOrPreviousSong(true)}>
         <IoPlaySkipForward size={16} />
       </RoundButton>
     </div>
