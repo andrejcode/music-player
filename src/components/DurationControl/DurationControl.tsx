@@ -1,20 +1,18 @@
 import { ChangeEvent } from 'react'
-import formatDuration from '@/utils'
+import { formatDuration } from '@/utils'
 import useSongStore from '@/store'
-import { AudioRefProp } from '@/types'
 import './DurationControl.css'
 
-function DurationControl({ audioRef }: AudioRefProp) {
+function DurationControl() {
+  const audio = useSongStore(state => state.audio)
   const currentTime = useSongStore(state => state.currentTime)
   const setCurrentTime = useSongStore(state => state.setCurrentTime)
   const duration = useSongStore(state => state.duration)
 
   function handleSeek(event: ChangeEvent<HTMLInputElement>) {
-    if (audioRef.current) {
-      const seekTime = parseInt(event.target.value)
-      audioRef.current.currentTime = seekTime
-      setCurrentTime(seekTime)
-    }
+    const seekTime = parseInt(event.target.value)
+    audio.currentTime = seekTime
+    setCurrentTime(seekTime)
   }
 
   return (

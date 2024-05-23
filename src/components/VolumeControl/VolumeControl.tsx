@@ -1,21 +1,16 @@
-import { ChangeEvent, RefObject, useEffect } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import { IoVolumeHigh, IoVolumeLow } from 'react-icons/io5'
-import './VolumeControl.css'
 import useSongStore from '@/store'
+import './VolumeControl.css'
 
-interface VolumeControlProps {
-  audioRef: RefObject<HTMLAudioElement>
-}
-
-function VolumeControl({ audioRef }: VolumeControlProps) {
+function VolumeControl() {
+  const audio = useSongStore(state => state.audio)
   const volume = useSongStore(state => state.volume)
   const changeVolume = useSongStore(state => state.changeVolume)
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume
-    }
-  }, [audioRef, volume])
+    audio.volume = volume
+  }, [audio, volume])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -34,11 +29,9 @@ function VolumeControl({ audioRef }: VolumeControlProps) {
   }, [volume, changeVolume])
 
   function handleVolumeChange(event: ChangeEvent<HTMLInputElement>) {
-    if (audioRef.current) {
-      const newVolume = parseInt(event.target.value) / 100
-      audioRef.current.volume = newVolume
-      changeVolume(newVolume)
-    }
+    const newVolume = parseInt(event.target.value) / 100
+    audio.volume = newVolume
+    changeVolume(newVolume)
   }
 
   return (

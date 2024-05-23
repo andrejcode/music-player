@@ -1,32 +1,33 @@
+import { useCallback, useEffect } from 'react'
 import { IoPlaySkipBack, IoPlaySkipForward } from 'react-icons/io5'
 import RoundButton from '../RoundButton/RoundButton'
 import PlayPauseButton from '../PlayPauseButton/PlayPauseButton'
-import { AudioRefProp } from '@/types'
 import useSongStore from '@/store'
 import songs from '@/songs'
 import './AudioControlsButtons.css'
-import { useCallback, useEffect } from 'react'
 
-function AudioControlsButtons({ audioRef }: AudioRefProp) {
+function AudioControlsButtons() {
   const setIsPlaying = useSongStore(state => state.setIsPlaying)
   const currentSong = useSongStore(state => state.currentSong)
   const changeSong = useSongStore(state => state.changeSong)
+  const setCurrentTime = useSongStore(state => state.setCurrentTime)
 
   const playNextOrPreviousSong = useCallback(
-    (playNextSong: boolean) => {
+    (isPreviousSong: boolean) => {
+      let nextIndex: number
       const currentIndex = songs.findIndex(song => song.id === currentSong.id)
 
-      let nextIndex: number
-      if (playNextSong) {
-        nextIndex = (currentIndex + 1) % songs.length
-      } else {
+      if (isPreviousSong) {
         nextIndex = (currentIndex - 1 + songs.length) % songs.length
+      } else {
+        nextIndex = (currentIndex + 1) % songs.length
       }
 
+      setCurrentTime(0)
       changeSong(songs[nextIndex])
       setIsPlaying(false)
     },
-    [changeSong, currentSong.id, setIsPlaying],
+    [changeSong, currentSong.id, setCurrentTime, setIsPlaying],
   )
 
   useEffect(() => {
@@ -47,13 +48,13 @@ function AudioControlsButtons({ audioRef }: AudioRefProp) {
 
   return (
     <div className="audio-controls-buttons">
-      <RoundButton onClick={() => playNextOrPreviousSong(false)}>
+      <RoundButton onClick={() => playNextOrPreviousSong(true)}>
         <IoPlaySkipBack size={16} />
       </RoundButton>
 
-      <PlayPauseButton audioRef={audioRef} />
+      <PlayPauseButton />
 
-      <RoundButton onClick={() => playNextOrPreviousSong(true)}>
+      <RoundButton onClick={() => playNextOrPreviousSong(false)}>
         <IoPlaySkipForward size={16} />
       </RoundButton>
     </div>

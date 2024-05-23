@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import songs, { type Song } from '@/songs'
 
 interface SongStore {
+  audio: HTMLAudioElement
   currentTime: number
   setCurrentTime: (newCurrentTime: number) => void
   duration: number
@@ -21,6 +22,7 @@ interface SongStore {
 const useSongStore = create<SongStore>()(
   persist(
     set => ({
+      audio: new Audio(),
       currentTime: 0,
       setCurrentTime: newCurrentTime => set({ currentTime: newCurrentTime }),
       duration: 0,
