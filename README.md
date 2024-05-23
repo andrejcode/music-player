@@ -37,3 +37,11 @@ To add new song:
 2. Add the song object to the list in `src/songs`.
 
    Note: If you don't include correct audio file that you declared in songs list you will get an error.
+
+## Future Development
+
+- The songs will be fetched from the API
+- App will be mobile friendly and will have full screen audio controls option with album cover (also from API)
+- Errors will be handled better
+- Add autoplay feature
+- Same song will be played if user presses on previous song button while song time is bigger then 5s for example
